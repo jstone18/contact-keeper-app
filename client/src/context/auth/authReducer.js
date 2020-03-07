@@ -27,18 +27,10 @@ export default (state, action) => {
 				isAuthenticated: true,
 				loading: false
 			};
-		case LOGOUT:
-			return {
-				...state,
-				token: null,
-				isAuthenticated: false,
-				loading: false,
-				user: null,
-				error: null
-			};
 		case REGISTER_FAIL:
 		case AUTH_ERROR:
 		case LOGIN_FAIL:
+		case LOGOUT:
 			localStorage.removeItem("token");
 			return {
 				...state,
