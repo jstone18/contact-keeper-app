@@ -29,7 +29,10 @@ const ContactState = props => {
 	const getContacts = async () => {
 		try {
 			const res = await axios.get("/contacts");
-			dispatch({ type: GET_CONTACTS, payload: res.data });
+			dispatch({
+				type: GET_CONTACTS,
+				payload: res.data
+			});
 		} catch (err) {
 			dispatch({
 				type: CONTACT_ERROR,
@@ -58,8 +61,19 @@ const ContactState = props => {
 	};
 
 	// Delete Contact
-	const deleteContact = id => {
-		dispatch({ type: DELETE_CONTACT, payload: id });
+	const deleteContact = async id => {
+		try {
+			const res = await axios.delete(`/contacts/${id}`);
+			dispatch({
+				type: DELETE_CONTACT,
+				payload: id
+			});
+		} catch (err) {
+			dispatch({
+				type: CONTACT_ERROR,
+				payload: err.response.data.msg
+			});
+		}
 	};
 
 	// Clear Contacts
@@ -69,7 +83,10 @@ const ContactState = props => {
 
 	// Set Current Contact
 	const setCurrent = contact => {
-		dispatch({ type: SET_CURRENT, payload: contact });
+		dispatch({
+			type: SET_CURRENT,
+			payload: contact
+		});
 	};
 
 	// Clear Current Contact
@@ -79,12 +96,18 @@ const ContactState = props => {
 
 	// Update Contact
 	const updateContact = contact => {
-		dispatch({ type: UPDATE_CONTACT, payload: contact });
+		dispatch({
+			type: UPDATE_CONTACT,
+			payload: contact
+		});
 	};
 
 	// Filter Contacts
 	const filterContacts = text => {
-		dispatch({ type: FILTER_CONTACTS, payload: text });
+		dispatch({
+			type: FILTER_CONTACTS,
+			payload: text
+		});
 	};
 
 	// Clear Filter
