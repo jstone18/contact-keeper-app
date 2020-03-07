@@ -75,7 +75,6 @@ export default (state, action) => {
 		case CONTACT_ERROR:
 			return {
 				...state,
-				loading: false,
 				error: action.payload
 			};
 		default:
