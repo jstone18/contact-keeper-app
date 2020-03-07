@@ -25,6 +25,14 @@ export default (state, action) => {
 				contacts: [action.payload, ...state.contacts],
 				loading: false
 			};
+		case UPDATE_CONTACT:
+			return {
+				...state,
+				contacts: state.contacts.map(contact =>
+					contact._id === action.payload._id ? action.payload : contact
+				),
+				loading: false
+			};
 		case DELETE_CONTACT:
 			return {
 				...state,
@@ -50,14 +58,6 @@ export default (state, action) => {
 			return {
 				...state,
 				current: null
-			};
-		case UPDATE_CONTACT:
-			return {
-				...state,
-				contacts: state.contacts.map(contact =>
-					contact.id === action.payload.id ? action.payload : contact
-				),
-				loading: false
 			};
 		case FILTER_CONTACTS:
 			return {
