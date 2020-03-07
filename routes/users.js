@@ -24,6 +24,7 @@ router.post(
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
+
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
@@ -31,30 +32,36 @@ router.post(
 		const { name, email, password } = req.body;
 
 		try {
+			// Check for user
 			let user = await User.findOne({ email });
 
 			if (user) {
 				return res.status(400).json({ msg: "User already exists" });
 			}
 
+			// Create new user object
 			user = new User({
 				name,
 				email,
 				password
 			});
 
+			// Hash password
 			const salt = await bcrypt.genSalt(10);
 
 			user.password = await bcrypt.hash(password, salt);
 
+			// Save user to db
 			await user.save();
 
+			// Create payload
 			const payload = {
 				user: {
 					id: user.id
 				}
 			};
 
+			// Sign token
 			jwt.sign(
 				payload,
 				config.get("jwtSecret"),
@@ -63,6 +70,7 @@ router.post(
 				},
 				(err, token) => {
 					if (err) throw err;
+					// respond with token
 					res.json({ token });
 				}
 			);
